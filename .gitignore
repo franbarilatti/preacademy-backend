@@ -1,0 +1,24 @@
+# Archivos y carpetas del IDE (IntelliJ, VS Code)
+.idea/
+*.iml
+.vscode/
+
+# Archivos compilados y carpetas de build
+*.class
+/out/
+target/
+bin/
+build/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales y logs
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Configuración de entorno
+*.env
