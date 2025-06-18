@@ -3,6 +3,7 @@ package main.cineverse;
 import main.cineverse.models.*;
 import main.cineverse.models.enums.Genre;
 import main.cineverse.models.enums.SubcriptionPlan;
+import main.cineverse.repositories.MovieRepository;
 import main.cineverse.services.PlatformService;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class CinemaVerse {
 
         // === Movies ===
 
-        Movie m1 = new InternalMovie(1, "El secreto de sus ojos", 129, Genre.THRILLER, 95, "Juan José Campanella", "2009");
+        /*Movie m1 = new InternalMovie(1, "El secreto de sus ojos", 129, Genre.THRILLER, 95, "Juan José Campanella", "2009");
         Movie m2 = new InternalMovie(2, "Relatos salvajes", 122, Genre.DRAMA, 90, "Damián Szifron", "2014");
         Movie m3 = new ExternalMovie(3, "Nueve reinas", 114, Genre.ACTION, 88, "Patagonik Film Group", LocalDate.of(2026, 5, 1));
         Movie m4 = new ExternalMovie(4, "El clan", 110, Genre.THRILLER, 85, "Telefe", LocalDate.of(2025, 12, 1));
@@ -65,7 +66,10 @@ public class CinemaVerse {
 
         System.out.println("\nViewings distribution by plan:");
         service.viewingsDistributionPlan()
-                .forEach((plan, count) -> System.out.println(plan + ": " + count));
+                .forEach((plan, count) -> System.out.println(plan + ": " + count));*/
+
+        MovieRepository repo = new MovieRepository();
+         repo.printAllMovies();
 
 
     }
