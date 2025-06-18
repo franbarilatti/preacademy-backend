@@ -148,6 +148,6 @@ public class PlatformService {
                                 .getPlan(),
                                 Collectors.counting()));
     }
-    
+
 
 }
