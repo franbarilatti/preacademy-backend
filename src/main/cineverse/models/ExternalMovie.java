@@ -39,4 +39,17 @@ public class ExternalMovie extends Movie{
     public void setLicenceExpirationDate(LocalDate licenceExpirationDate) {
         this.licenceExpirationDate = licenceExpirationDate;
     }
+
+    @Override
+    public String toString() {
+        return "ExternalMovie{" +
+                "studioName='" + studioName + '\'' +
+                ", licenceExpirationDate=" + licenceExpirationDate +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", durationMinutes=" + durationMinutes +
+                ", genre=" + genre +
+                ", rating=" + rating +
+                '}';
+    }
 }

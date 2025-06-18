@@ -37,4 +37,17 @@ public class InternalMovie extends Movie{
     public void setProductionYear(String productionYear) {
         this.productionYear = productionYear;
     }
+
+    @Override
+    public String toString() {
+        return "InternalMovie{" +
+                "directorName='" + directorName + '\'' +
+                ", productionYear='" + productionYear + '\'' +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", durationMinutes=" + durationMinutes +
+                ", genre=" + genre +
+                ", rating=" + rating +
+                '}';
+    }
 }

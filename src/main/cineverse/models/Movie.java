@@ -59,4 +59,15 @@ public abstract class Movie {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", durationMinutes=" + durationMinutes +
+                ", genre=" + genre +
+                ", rating=" + rating +
+                '}';
+    }
 }
