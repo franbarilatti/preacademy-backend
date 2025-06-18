@@ -2,6 +2,7 @@ package main.cineverse.services;
 
 import main.cineverse.models.Movie;
 import main.cineverse.models.Platform;
+import main.cineverse.models.User;
 import main.cineverse.models.Viewing;
 import main.cineverse.models.enums.Genre;
 
@@ -14,6 +15,10 @@ import java.util.stream.Collectors;
 public class PlatformService {
 
     private Platform platform;
+
+    public PlatformService(Platform platform){
+        this.platform = platform;
+    }
 
     public List<Movie> completeViewedMovies(){
         return platform.getViewings()
@@ -46,8 +51,12 @@ public class PlatformService {
                 .collect(Collectors.toList());
     }
 
-    public User mostViewsUser(){
-
+    public Map<User,Integer> topContentConsumers(){
+        return platform.getViewings()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Viewing::getUser,
+                        Collectors.summingInt(Viewing::getMinutesWatched)));
     }
 
     public double minutesPerUserAverage(){
