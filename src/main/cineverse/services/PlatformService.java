@@ -24,8 +24,26 @@ public class PlatformService {
                 .collect(Collectors.toList());
     }
 
-    public List<> mostPopularGenres(){
-        return
+    public List<Genre> mostPopularGenres(){
+        Map<Genre, Long> genreCount = platform
+                .getViewings()
+                .stream()
+                .collect(Collectors
+                        .groupingBy(v -> v.getMovie().getGenre(), Collectors.counting()));
+
+        long max = genreCount
+                .values()
+                .stream()
+                .mapToLong(Long::longValue)
+                .max()
+                .orElse(0);
+
+        return genreCount
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue() == max)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     public User mostViewsUser(){
