@@ -5,6 +5,7 @@ import main.cineverse.models.Platform;
 import main.cineverse.models.User;
 import main.cineverse.models.Viewing;
 import main.cineverse.models.enums.Genre;
+import main.cineverse.models.enums.SubcriptionPlan;
 
 import java.security.PublicKey;
 import java.util.List;
@@ -125,8 +126,28 @@ public class PlatformService {
                 .map(Map.Entry::getKey)
                 .orElse("No users");
     }
+
+
+    public boolean allUsersHaveViewedSomething(){
+        return platform
+                .getUsers()
+                .stream()
+                .allMatch(u -> platform
+                        .getViewings()
+                        .stream()
+                        .anyMatch(v -> v.getUser().equals(u)));
+    }
+
+    public Map<SubcriptionPlan,Long> viewingsDistributionPlan(){
+        return platform
+                .getViewings()
+                .stream()
+                .collect(Collectors
+                        .groupingBy(v -> v
+                                .getUser()
+                                .getPlan(),
+                                Collectors.counting()));
+    }
     
-
-
 
 }
