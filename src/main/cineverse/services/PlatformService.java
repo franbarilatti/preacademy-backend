@@ -10,6 +10,7 @@ import java.security.PublicKey;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PlatformService {
@@ -59,8 +60,41 @@ public class PlatformService {
                         Collectors.summingInt(Viewing::getMinutesWatched)));
     }
 
-    public double minutesPerUserAverage(){
+    public Map<User,Double> averageMinutesPerUser(){
+        return platform.getViewings()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Viewing::getUser,
+                        Collectors.averagingInt(Viewing::getMinutesWatched)));
+    }
+
+    public double PercentageOfMoviesWatched(){
+        Set<Movie> viewedMovies = platform.getViewings()
+                .stream()
+                .map(Viewing::getMovie)
+                .collect(Collectors.toSet());
+
+        int totalMovies = platform.getMovies().size();
+        int viewedCount = completeViewedMovies().size();
+
+        double percentageViewed = (viewedCount * 100.00) / totalMovies;
+
+        return percentageViewed;
 
     }
+
+    public List<Movie> unwatchedMovies(){
+        Set<Movie> viewedMovies = platform.getViewings()
+                .stream()
+                .map(Viewing::getMovie)
+                .collect(Collectors.toSet());
+        
+        return platform.getMovies()
+                .stream()
+                .filter(m -> !completeViewedMovies().contains(m))
+                .collect(Collectors.toList());
+        
+    }
+
 
 }
