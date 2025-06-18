@@ -96,5 +96,37 @@ public class PlatformService {
         
     }
 
+    public List<Movie> longestMovies(){
+
+        int maxDuration = platform
+                .getMovies()
+                .stream()
+                .mapToInt(Movie::getDurationMinutes)
+                .max()
+                .orElse(0);
+
+        return platform
+                .getMovies()
+                .stream()
+                .filter(m -> m.getDurationMinutes() == maxDuration)
+                .collect(Collectors.toList());
+    }
+
+    public String countryWithMostUsers(){
+        return platform
+                .getUsers()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        User::getCountry,
+                        Collectors.counting()
+                ))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("No users");
+    }
+    
+
+
 
 }
