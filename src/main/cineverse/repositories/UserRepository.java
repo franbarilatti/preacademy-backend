@@ -11,21 +11,30 @@ import java.util.List;
 
 public class UserRepository {
 
-    public void save(User user) throws SQLException{
+    public void save(User user) throws SQLException {
+        String sql = "INSERT INTO users (username, country, plan) VALUES (?, ?, ?)";
 
-        String sql = "INSERT INTO users (id, username, country, plan) VALUES (?,?,?,?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        try(Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getCountry());
+            stmt.setString(3, user.getPlan().name());
 
-            stmt.setInt(1, user.getId());
-            stmt.setString(2, user.getUsername());
-            stmt.setString(3, user.getCountry());
-            stmt.setString(4, user.getPlan().name());
+            int affectedRows = stmt.executeUpdate();
 
-            stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));  // Seteamos el ID generado
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
         }
-
     }
 
     public List<User> findAll() throws SQLException{

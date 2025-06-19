@@ -24,6 +24,12 @@ public class ExternalMovie extends Movie{
         this.licenceExpirationDate = licenceExpirationDate;
     }
 
+    public ExternalMovie(String title, int durationMinutes, Genre genre, int rating, String studioName, LocalDate licenceExpirationDate) {
+        super(title, durationMinutes, genre, rating);
+        this.studioName = studioName;
+        this.licenceExpirationDate = licenceExpirationDate;
+    }
+
     public String getStudioName() {
         return studioName;
     }

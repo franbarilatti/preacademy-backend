@@ -4,8 +4,11 @@ import main.cineverse.models.*;
 import main.cineverse.models.enums.Genre;
 import main.cineverse.models.enums.SubcriptionPlan;
 import main.cineverse.repositories.MovieRepository;
+import main.cineverse.repositories.UserRepository;
+import main.cineverse.repositories.ViewingRepository;
 import main.cineverse.services.PlatformService;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,8 +71,65 @@ public class CinemaVerse {
         service.viewingsDistributionPlan()
                 .forEach((plan, count) -> System.out.println(plan + ": " + count));*/
 
-        MovieRepository repo = new MovieRepository();
-         repo.printAllMovies();
+        /*MovieRepository repo = new MovieRepository();
+         repo.printAllMovies();*/
+
+        // Crear instancias de repositorios
+        MovieRepository movieRepo = new MovieRepository();
+        UserRepository userRepo = new UserRepository();
+        ViewingRepository viewingRepo = new ViewingRepository();
+
+        try {
+            // Crear objetos sin id (0 o sin asignar)
+            InternalMovie interna1 = new InternalMovie(
+                    0,
+                    "Nueve Reinas",
+                    114,
+                    Genre.THRILLER,
+                    92,
+                    "Fabián Bielinsky",
+                    "2000"
+            );
+
+            ExternalMovie externa1 = new ExternalMovie(
+                    0,
+                    "El Padrino",
+                    175,
+                    Genre.DRAMA,
+                    98,
+                    "Paramount Pictures",
+                    LocalDate.of(2030, 12, 31)
+            );
+
+            // Guardar películas, se asigna ID autoincremental desde DB
+            movieRepo.save(interna1);
+            movieRepo.save(externa1);
+
+            // Ahora interna1.getId() y externa1.getId() tienen el valor asignado por la DB
+
+            User user1 = new User(0, "agus_mdp", SubcriptionPlan.PREMIUM, "Argentina", List.of());
+            User user2 = new User(0, "nico_br", SubcriptionPlan.STANDAR, "Brasil", List.of());
+
+            userRepo.save(user1);
+            userRepo.save(user2);
+
+            // user1.getId() y user2.getId() también ya tienen IDs asignados
+
+            // Crear visualizaciones usando IDs ya asignados
+            Viewing view1 = new Viewing(interna1, user1, LocalDate.now(), 114);
+            Viewing view2 = new Viewing(externa1, user1, LocalDate.now(), 175);
+            Viewing view3 = new Viewing(interna1, user2, LocalDate.now(), 60); // no la termina
+
+            viewingRepo.save(view1);
+            viewingRepo.save(view2);
+            viewingRepo.save(view3);
+
+            System.out.println("¡Datos cargados correctamente!");
+
+        } catch (SQLException e) {
+            System.err.println("Error al interactuar con la base de datos:");
+            e.printStackTrace();
+        }
 
 
     }

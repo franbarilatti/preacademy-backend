@@ -14,26 +14,24 @@ import java.util.List;
 public class MovieRepository {
 
 
-    public void save(Movie movie) throws SQLException{
-
+    public void save(Movie movie) throws SQLException {
         String sql = "INSERT INTO movies (title, duration_minutes, genre, rating, origin, studio_name, licence_expiration, director_name, production_year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-
-        try(Connection conn = DatabaseConnection.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)){
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, movie.getTitle());
-            stmt.setInt(2,movie.getDurationMinutes());
+            stmt.setInt(2, movie.getDurationMinutes());
             stmt.setString(3, movie.getGenre().name());
             stmt.setInt(4, movie.getRating());
 
-            if(movie instanceof InternalMovie internal){
+            if (movie instanceof InternalMovie internal) {
                 stmt.setString(5, "INTERNAL");
                 stmt.setNull(6, Types.VARCHAR);
                 stmt.setNull(7, Types.DATE);
                 stmt.setString(8, internal.getDirectorName());
                 stmt.setString(9, internal.getProductionYear());
-            }else if (movie instanceof ExternalMovie external) {
+            } else if (movie instanceof ExternalMovie external) {
                 stmt.setString(5, "EXTERNAL");
                 stmt.setString(6, external.getStudioName());
                 stmt.setDate(7, Date.valueOf(external.getLicenceExpirationDate()));
@@ -41,10 +39,20 @@ public class MovieRepository {
                 stmt.setNull(9, Types.VARCHAR);
             }
 
-            stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
 
+            if (affectedRows == 0) {
+                throw new SQLException("Creating movie failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    movie.setId(generatedKeys.getInt(1));  // Seteás el id generado en el objeto
+                } else {
+                    throw new SQLException("Creating movie failed, no ID obtained.");
+                }
+            }
         }
-
     }
 
     public List<Movie> findAll() throws SQLException{

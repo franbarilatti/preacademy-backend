@@ -20,6 +20,13 @@ public abstract class Movie {
         this.rating = rating;
     }
 
+    public Movie(String title, int durationMinutes, Genre genre, int rating) {
+        this.title = title;
+        this.durationMinutes = durationMinutes;
+        this.genre = genre;
+        this.rating = rating;
+    }
+
     public int getId() {
         return id;
     }

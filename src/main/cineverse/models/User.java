@@ -23,6 +23,13 @@ public class User {
         this.viewings = viewings;
     }
 
+    public User(String username, SubcriptionPlan plan, String country, List<Viewing> viewings) {
+        this.username = username;
+        this.plan = plan;
+        this.country = country;
+        this.viewings = viewings;
+    }
+
     public User id(int id){
         this.id = id;
         return this;

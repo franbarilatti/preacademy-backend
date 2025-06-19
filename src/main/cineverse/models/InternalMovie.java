@@ -22,6 +22,12 @@ public class InternalMovie extends Movie{
         this.productionYear = productionYear;
     }
 
+    public InternalMovie(String title, int durationMinutes, Genre genre, int rating, String directorName, String productionYear) {
+        super(title, durationMinutes, genre, rating);
+        this.directorName = directorName;
+        this.productionYear = productionYear;
+    }
+
     public String getDirectorName() {
         return directorName;
     }
