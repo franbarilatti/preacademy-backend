@@ -8,6 +8,7 @@ import main.cineverse.models.enums.Genre;
 
 import java.lang.reflect.Type;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +100,36 @@ public class MovieRepository {
             System.out.println(m.getTitle() + " - " + m.getGenre() + " - " + m.getDurationMinutes() + " mins");
 
         }
+    }
+
+    public Movie findById(int id) throws SQLException {
+        String sql = "SELECT * FROM movies WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String title = rs.getString("title");
+                    int duration = rs.getInt("duration_minutes");
+                    String genreStr = rs.getString("genre");
+                    int rating = rs.getInt("rating");
+                    String origin = rs.getString("origin");
+
+                    if ("INTERNAL".equals(origin)) {
+                        String directorName = rs.getString("director_name");
+                        String productionYear = rs.getString("production_year");
+                        return new InternalMovie(id, title, duration, Genre.valueOf(genreStr), rating, directorName, productionYear);
+                    } else if ("EXTERNAL".equals(origin)) {
+                        String studioName = rs.getString("studio_name");
+                        LocalDate licenceExpiration = rs.getDate("licence_expiration").toLocalDate();
+                        return new ExternalMovie(id, title, duration, Genre.valueOf(genreStr), rating, studioName, licenceExpiration);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null; // si no encontró película con ese id
     }
 
 

@@ -65,6 +65,22 @@ public class UserRepository {
         }
     }
 
+    public User findById(int id) throws SQLException {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String username = rs.getString("username");
+                    String country = rs.getString("country");
+                    SubcriptionPlan plan = SubcriptionPlan.valueOf(rs.getString("plan"));
 
+                    return new User(id, username, plan, country, new ArrayList<>());
+                }
+            }
+        }
+        return null; // si no encontró usuario con ese id
+    }
 
 }

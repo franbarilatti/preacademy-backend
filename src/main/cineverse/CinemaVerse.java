@@ -16,66 +16,75 @@ import java.util.List;
 
 public class CinemaVerse {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-        // === Movies ===
+        MovieRepository movieRepository = new MovieRepository();
+        UserRepository userRepository = new UserRepository();
+        ViewingRepository viewingRepository = new ViewingRepository();
+
+        try{
+            // === Movies ===
 
         /*Movie m1 = new InternalMovie(1, "El secreto de sus ojos", 129, Genre.THRILLER, 95, "Juan José Campanella", "2009");
         Movie m2 = new InternalMovie(2, "Relatos salvajes", 122, Genre.DRAMA, 90, "Damián Szifron", "2014");
         Movie m3 = new ExternalMovie(3, "Nueve reinas", 114, Genre.ACTION, 88, "Patagonik Film Group", LocalDate.of(2026, 5, 1));
         Movie m4 = new ExternalMovie(4, "El clan", 110, Genre.THRILLER, 85, "Telefe", LocalDate.of(2025, 12, 1));
         Movie m5 = new InternalMovie(5, "Metegol", 106, Genre.KIDS, 75, "Juan José Campanella", "2013");
-        Movie m6 = new ExternalMovie(6, "La odisea de los giles", 116, Genre.COMEDY, 83, "K&S Films", LocalDate.of(2027, 3, 15));
+        Movie m6 = new ExternalMovie(6, "La odisea de los giles", 116, Genre.COMEDY, 83, "K&S Films", LocalDate.of(2027, 3, 15));*/
 
-        List<Movie> movies = Arrays.asList(m1, m2, m3, m4, m5,m6);
+            List<Movie> movies = movieRepository.findAll();
 
-        // === Users ===
+            // === Users ===
 
-        User u1 = new User().id(1).username("Pepe").plan(SubcriptionPlan.PREMIUM).country("Argentina").viewings(new ArrayList<>());
+        /*User u1 = new User().id(1).username("Pepe").plan(SubcriptionPlan.PREMIUM).country("Argentina").viewings(new ArrayList<>());
         User u2 = new User().id(2).username("Lolo").plan(SubcriptionPlan.FREE).country("uruguay").viewings(new ArrayList<>());
-        User u3 = new User().id(3).username("Fulano").plan(SubcriptionPlan.STANDAR).country("Argentina").viewings(new ArrayList<>());
+        User u3 = new User().id(3).username("Fulano").plan(SubcriptionPlan.STANDAR).country("Argentina").viewings(new ArrayList<>());*/
 
-        List<User> users = Arrays.asList(u1, u2, u3);
+            List<User> users = userRepository.findAll();
 
-        Viewing v1 = new Viewing().movie(m1).user(u1).date(LocalDate.now().minusDays(5)).minutesWatched(110);
+        /*Viewing v1 = new Viewing().movie(m1).user(u1).date(LocalDate.now().minusDays(5)).minutesWatched(110);
         Viewing v2 = new Viewing().movie(m2).user(u1).date(LocalDate.now().minusDays(2)).minutesWatched(150);
         Viewing v3 = new Viewing().movie(m3).user(u2).date(LocalDate.now().minusDays(1)).minutesWatched(100);
         Viewing v4 = new Viewing().movie(m3).user(u2).date(LocalDate.now()).minutesWatched(125); // vista completa
         Viewing v5 = new Viewing().movie(m4).user(u1).date(LocalDate.now().minusDays(10)).minutesWatched(90);
-        Viewing v6 = new Viewing().movie(m4).user(u3).date(LocalDate.now()).minutesWatched(50);
+        Viewing v6 = new Viewing().movie(m4).user(u3).date(LocalDate.now()).minutesWatched(50);*/
 
-        List<Viewing> viewings = Arrays.asList(v1, v2, v3, v4, v5, v6);
+            List<Viewing> viewings = viewingRepository.findAll();
 
-        // Set viewings to users
-        u1.setViewings(Arrays.asList(v1, v2, v5));
-        u2.setViewings(Arrays.asList(v3, v4));
-        u3.setViewings(List.of(v6));
+            // Set viewings a users
+            
+            // === Platform ===
+            Platform cineverse = new Platform("CineVerse", movies, users, viewings);
 
-        // === Platform ===
-        Platform cineverse = new Platform("CineVerse", movies, users, viewings);
+            // === Service ===
+            PlatformService service = new PlatformService(cineverse);
 
-        // === Service ===
-        PlatformService service = new PlatformService(cineverse);
+            // === Tests ===
+            System.out.println("Longest movies:");
+            service.longestMovies().forEach(System.out::println);
 
-        // === Tests ===
-        System.out.println("Longest movies:");
-        service.longestMovies().forEach(System.out::println);
+            System.out.println("\nMost active country:");
+            System.out.println(service.countryWithMostUsers());
 
-        System.out.println("\nMost active country:");
-        System.out.println(service.countryWithMostUsers());
+            System.out.println("\nHas everyone watched something?");
+            System.out.println(service.allUsersHaveViewedSomething());
 
-        System.out.println("\nHas everyone watched something?");
-        System.out.println(service.allUsersHaveViewedSomething());
+            System.out.println("\nViewings distribution by plan:");
+            service.viewingsDistributionPlan()
+                    .forEach((plan, count) -> System.out.println(plan + ": " + count));
 
-        System.out.println("\nViewings distribution by plan:");
-        service.viewingsDistributionPlan()
-                .forEach((plan, count) -> System.out.println(plan + ": " + count));*/
+        }catch (SQLException e){
+            System.err.println("Error al interactuar con la base de datos:");
+            e.printStackTrace();
+        }
+
+
 
         /*MovieRepository repo = new MovieRepository();
          repo.printAllMovies();*/
 
         // Crear instancias de repositorios
-        MovieRepository movieRepo = new MovieRepository();
+        /*MovieRepository movieRepo = new MovieRepository();
         UserRepository userRepo = new UserRepository();
         ViewingRepository viewingRepo = new ViewingRepository();
 
@@ -129,7 +138,7 @@ public class CinemaVerse {
         } catch (SQLException e) {
             System.err.println("Error al interactuar con la base de datos:");
             e.printStackTrace();
-        }
+        }*/
 
 
     }
