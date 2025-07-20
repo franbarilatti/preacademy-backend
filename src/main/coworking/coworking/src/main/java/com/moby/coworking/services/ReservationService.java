@@ -11,6 +11,6 @@ public interface ReservationService {
 
     List<ReservationResponseDto> getAllReservations();
 
-    List<ReservationResponseDto> getReservationByUser();
+    List<ReservationResponseDto> getReservationByUser(Long userId);
     void cancelReservation(Long reservationId, Long currentUserId,boolean isAdmin);
 }
