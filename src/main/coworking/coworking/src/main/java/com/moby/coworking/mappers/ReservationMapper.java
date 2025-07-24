@@ -1,6 +1,5 @@
 package com.moby.coworking.mappers;
 
-import com.moby.coworking.dtos.ReservationResponseDto;
 import com.moby.coworking.models.Reservation;
 
 public class ReservationMapper {
