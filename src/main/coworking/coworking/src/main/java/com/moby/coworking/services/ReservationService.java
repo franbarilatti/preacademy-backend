@@ -47,5 +47,22 @@ public class ReservationService {
 
     }
 
+    public List<Reservation> getAllReservations(){
+        return reservationRepository.findAll();
+    }
+
+    public List<Reservation> getReservationByUser(Long userId){
+        return reservationRepository.findByUserId(userId);
+    }
+
+    public void cancelReservation(Long id){
+        Reservation reservation = reservationRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+        reservation.setStatus(ReservationStatus.CANCELLED);
+        reservationRepository.save(reservation);
+    }
+
+
 
 }

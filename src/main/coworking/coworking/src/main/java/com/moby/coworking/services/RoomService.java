@@ -26,6 +26,10 @@ public class RoomService {
 
     }
 
+    public List<Room> getAll(){
+        return roomRepository.findAll();
+    }
+
     public List<Room> getAvailableRooms(){
         return roomRepository.findByEnabledTrue();
     }
