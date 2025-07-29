@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ReservationConflictException.class)
-    public ResponseEntity<String> handlerReservationConflict(ReservationConflictException ex){
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex){
+        return new ResponseEntity<>("Un error a ocurrido: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

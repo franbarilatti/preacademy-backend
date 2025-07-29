@@ -16,7 +16,7 @@ public class ReservationDTO {
     private Long roomId;
 
     @NotNull
-    private LocalDateTime startDatetime;
+    private LocalDateTime startDateTime;
 
     @NotNull
     private LocalDateTime endDateTime;
