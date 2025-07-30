@@ -29,7 +29,7 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         List<Reservation> collisions = reservationRepository
-                .findReservationByData(room.getId(), ReservationStatus.ACTIVE, reservationDTO.getEndDateTime(), reservationDTO.getStartDatetime());
+                .findReservationByData(room.getId(), ReservationStatus.ACTIVE, reservationDTO.getEndDateTime(), reservationDTO.getStartDateTime());
 
         if (!collisions.isEmpty()){
             throw new RuntimeException("El horario de reserva no está disponible");
@@ -39,7 +39,7 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setUser(user);
         reservation.setRoom(room);
-        reservation.setStartDateTime(reservationDTO.getStartDatetime());
+        reservation.setStartDateTime(reservationDTO.getStartDateTime());
         reservation.setEndDateTime(reservationDTO.getEndDateTime());
         reservation.setStatus(ReservationStatus.ACTIVE);
 
@@ -61,6 +61,12 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
         reservation.setStatus(ReservationStatus.CANCELLED);
         reservationRepository.save(reservation);
+    }
+
+    public boolean isReservationOwner(Long reservationId, String username){
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+        return reservation.getUser().getEmail().equals(username);
     }
 
 

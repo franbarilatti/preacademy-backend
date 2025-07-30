@@ -6,6 +6,7 @@ import com.moby.coworking.services.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @reservationService.isReservationOwner(#id, authentication.principal.username)")
     public ResponseEntity<Void> cancelReservation(@PathVariable Long id){
         reservationService.cancelReservation(id);
 
