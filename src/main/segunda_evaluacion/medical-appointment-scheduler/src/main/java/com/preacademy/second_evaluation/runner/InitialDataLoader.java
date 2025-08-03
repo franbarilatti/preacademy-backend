@@ -36,33 +36,33 @@ public class InitialDataLoader implements CommandLineRunner {
         // Create patients
         Patient patient1 = new Patient();
         patient1.setId(1L);
-        patient1.setName("John");
-        patient1.setLastName("Doe");
+        patient1.setName("Juan");
+        patient1.setLastName("Perez");
         patient1.setDni("12345678");
-        patient1.setEmail("john.doe@example.com");
+        patient1.setEmail("juan.perez@email.com");
         patientService.createPatient(patient1);
         logger.info("Created patient: {}", patient1);
 
         Patient patient2 = new Patient();
         patient2.setId(2L);
-        patient2.setName("Jane");
-        patient2.setLastName("Smith");
+        patient2.setName("Fulana");
+        patient2.setLastName("Mengana");
         patient2.setDni("87654321");
-        patient2.setEmail("jane.smith@example.com");
+        patient2.setEmail("fulana.mengana@email.com");
         patientService.createPatient(patient2);
         logger.info("Created patient: {}", patient2);
 
         // Create professionals
         Professional professional1 = new Professional();
         professional1.setId(1L);
-        professional1.setFullName("Dr. Alice Brown");
+        professional1.setFullName("Dra. Ana Tomia");
         professional1.setSpecialty("Clínica");
         professionalService.create(professional1);
         logger.info("Created professional: {}", professional1);
 
         Professional professional2 = new Professional();
         professional2.setId(2L);
-        professional2.setFullName("Dr. Bob Wilson");
+        professional2.setFullName("Dr. Tekuro Tukarie");
         professional2.setSpecialty("Odontología");
         professionalService.create(professional2);
         logger.info("Created professional: {}", professional2);

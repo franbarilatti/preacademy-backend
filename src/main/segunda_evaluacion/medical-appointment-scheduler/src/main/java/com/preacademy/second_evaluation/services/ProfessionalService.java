@@ -33,4 +33,6 @@ public class ProfessionalService {
         logger.info("Consultando todos los profesionales");
         return professionalRepository.findAll();
     }
+
+
 }
