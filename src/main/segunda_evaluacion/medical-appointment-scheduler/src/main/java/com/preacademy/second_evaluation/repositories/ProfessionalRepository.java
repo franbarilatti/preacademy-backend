@@ -1,11 +1,13 @@
 package com.preacademy.second_evaluation.repositories;
 
+import com.preacademy.second_evaluation.models.Patient;
 import com.preacademy.second_evaluation.models.Professional;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -22,6 +24,10 @@ public class ProfessionalRepository {
         return professionals.values().stream()
                 .filter(p -> p.getSpecialty().equalsIgnoreCase(specialty))
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Professional> findById(Long id) {
+        return Optional.ofNullable(professionals.get(id));
     }
 
     public Map<Long, Professional> findAll(){
